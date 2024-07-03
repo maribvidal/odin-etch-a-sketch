@@ -1,3 +1,23 @@
 * {
     box-sizing: border-box;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-container {
+    margin-top: 128px;
+    width: 512px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.square {
+    width: 32px;
+    height: 32px;
+    border: 2px solid black;
+}
