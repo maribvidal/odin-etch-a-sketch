@@ -2,35 +2,14 @@
 
 //  - Global Variables
 
-const HEX_RED = "#FF0000";
-const HEX_BLUE = "#0000ff";
-const HEX_GREEN = "#00ff00";
-const HEX_WHITE = "#ffffff";
-
 const mainContainer = document.createElement("div");
 mainContainer.id = "main-container";
 
 const optionsContainer = document.createElement("div");
 optionsContainer.id = "options-container";
 
-const optionRed = document.createElement("option");
-optionRed.value = HEX_RED;
-optionRed.textContent = "Red";
-
-const optionBlue = document.createElement("option");
-optionBlue.value = HEX_BLUE;
-optionBlue.textContent = "Blue";
-
-const optionGreen = document.createElement("option");
-optionGreen.value = HEX_GREEN;
-optionGreen.textContent = "Green";
-
-const optionWhite = document.createElement("option");
-optionWhite.value = HEX_WHITE;
-optionWhite.textContent = "White";
-
-const selectColor = document.createElement("select");
-selectColor.name = "selectColor";
+const inputColor = document.createElement("input");
+inputColor.type = "color";
 
 const btnChangeGridSize = document.createElement("button");
 btnChangeGridSize.textContent = "Change Grid Size";
@@ -40,12 +19,13 @@ btnToggleGrid.textContent = "Toggle Grid";
 
 let gridArray = [];
 let gridSize = 16;
-let currentColor = HEX_RED;
+let currentColor = inputColor.value;
+let mouseMoving = false;
 
 //  - Functions
 
 function changeCurrentColor() {
-    currentColor = selectColor.value;
+    currentColor = inputColor.value;
 }
 
 function changeGridSize() {
@@ -100,11 +80,7 @@ function removeGrid(array) {
 
 //  - General logic
 
-selectColor.appendChild(optionRed);
-selectColor.appendChild(optionBlue);
-selectColor.appendChild(optionGreen);
-selectColor.appendChild(optionWhite);
-optionsContainer.appendChild(selectColor);
+optionsContainer.appendChild(inputColor);
 optionsContainer.appendChild(btnChangeGridSize);
 
 gridArray = createGrid(gridArray);
@@ -114,7 +90,7 @@ document.body.appendChild(mainContainer);
 document.body.appendChild(optionsContainer);
 
 // Change the currentColor with the select button
-selectColor.addEventListener("change", changeCurrentColor);
+inputColor.addEventListener("change", changeCurrentColor);
 
 // Change the grid size
 btnChangeGridSize.addEventListener("click", () => {
@@ -125,5 +101,20 @@ btnChangeGridSize.addEventListener("click", () => {
         gridArray = [];
         gridArray = createGrid();
         appendGrid(gridArray);
+    }
+});
+
+// Implementar la opción de poder dibujar arrastrando el mouse
+//Hacer un toggle
+mainContainer.addEventListener("mousedown", () => {mouseMoving = true});
+mainContainer.addEventListener("mouseup", () => {mouseMoving = false});
+mainContainer.addEventListener("mouseleave", () => {mouseMoving = false});
+
+//Arrastrar el mouse
+mainContainer.addEventListener("mousemove", (event) => {
+    let target = event.target;
+
+    if (mouseMoving && target.className === "square") {
+        target.style.backgroundColor = currentColor;
     }
 });
